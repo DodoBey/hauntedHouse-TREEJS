@@ -1,4 +1,4 @@
-# Three.js Journey
+# Haunted House
 
 ## Setup
 Download [Node.js](https://nodejs.org/en/download/).
@@ -14,3 +14,10 @@ npm run dev
 # Build for production in the dist/ directory
 npm run build
 ```
+
+- [ ] Add Chimney
+- [ ] Add Smoke coming out of the chimney
+- [ ] Add window and the body
+- [ ] Move the body on the window based on the camera angle
+- [ ] Add texture for the tombstones
+- [ ] Add sound effect
