@@ -7,6 +7,7 @@ import * as dat from 'lil-gui'
  */
 // Debug
 const gui = new dat.GUI()
+// gui.hide()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -32,6 +33,20 @@ const doorNormalTexture = textureLoader.load('/textures/door/normal.jpg')
 const doorMetalnessTexture = textureLoader.load('/textures/door/metalness.jpg')
 const doorRoughnessTexture = textureLoader.load('/textures/door/roughness.jpg')
 
+const roofColorTexture = textureLoader.load('/textures/roof/color.jpg')
+const roofAlphaTexture = textureLoader.load('/textures/roof/alpha.jpg')
+const roofAmbientOcclusionTexture = textureLoader.load('/textures/roof/ambientOcclusion.jpg')
+const roofHeightTexture = textureLoader.load('/textures/roof/height.png')
+const roofNormalTexture = textureLoader.load('/textures/roof/normal.jpg')
+const roofRoughnessTexture = textureLoader.load('/textures/roof/roughness.jpg')
+
+const woodColorTexture = textureLoader.load('/textures/wood/color.jpg')
+const woodAmbientOcclusionTexture = textureLoader.load('/textures/wood/ambientOcclusion.jpg')
+const woodHeightTexture = textureLoader.load('/textures/wood/height.png')
+const woodNormalTexture = textureLoader.load('/textures/wood/normal.jpg')
+const woodMetalnessTexture = textureLoader.load('/textures/wood/metalness.jpg')
+const woodRoughnessTexture = textureLoader.load('/textures/wood/roughness.jpg')
+
 const bricksColorTexture = textureLoader.load('/textures/bricks/color.jpg')
 const bricksAmbientOcclusionTexture = textureLoader.load('/textures/bricks/ambientOcclusion.jpg')
 const bricksNormalTexture = textureLoader.load('/textures/bricks/normal.jpg')
@@ -41,6 +56,11 @@ const grassColorTexture = textureLoader.load('/textures/grass/color.jpg')
 const grassAmbientOcclusionTexture = textureLoader.load('/textures/grass/ambientOcclusion.jpg')
 const grassNormalTexture = textureLoader.load('/textures/grass/normal.jpg')
 const grassRoughnessTexture = textureLoader.load('/textures/grass/roughness.jpg')
+
+const concrete2ColorTexture = textureLoader.load('/textures/concrete2/color.jpg')
+const concrete2AmbientOcclusionTexture = textureLoader.load('/textures/concrete2/ambientOcclusion.jpg')
+const concrete2NormalTexture = textureLoader.load('/textures/concrete2/normal.jpg')
+const concrete2RoughnessTexture = textureLoader.load('/textures/concrete2/roughness.jpg')
 
 grassColorTexture.repeat.set(8, 8)
 grassAmbientOcclusionTexture.repeat.set(8, 8)
@@ -56,6 +76,35 @@ grassColorTexture.wrapT = THREE.RepeatWrapping
 grassAmbientOcclusionTexture.wrapT = THREE.RepeatWrapping
 grassNormalTexture.wrapT = THREE.RepeatWrapping
 grassRoughnessTexture.wrapT = THREE.RepeatWrapping
+
+// roofColorTexture.repeat.set(1, 1)
+// roofAlphaTexture.repeat.set(1, 1)
+// roofAmbientOcclusionTexture.repeat.set(1, 1)
+// roofHeightTexture.repeat.set(1, 1)
+// roofNormalTexture.repeat.set(1, 1)
+// roofRoughnessTexture.repeat.set(1, 1)
+
+roofColorTexture.wrapS = THREE.RepeatWrapping
+roofAlphaTexture.wrapS = THREE.RepeatWrapping
+roofAmbientOcclusionTexture.wrapS = THREE.RepeatWrapping
+roofHeightTexture.wrapS = THREE.RepeatWrapping
+roofNormalTexture.wrapS = THREE.RepeatWrapping
+roofRoughnessTexture.wrapS = THREE.RepeatWrapping
+
+roofColorTexture.wrapT = THREE.RepeatWrapping
+roofAlphaTexture.wrapT = THREE.RepeatWrapping
+roofAmbientOcclusionTexture.wrapT = THREE.RepeatWrapping
+roofHeightTexture.wrapT = THREE.RepeatWrapping
+roofNormalTexture.wrapT = THREE.RepeatWrapping
+roofRoughnessTexture.wrapT = THREE.RepeatWrapping
+
+roofColorTexture.rotation = 1.44
+roofAlphaTexture.rotation = 1.44
+roofAmbientOcclusionTexture.rotation = 1.44
+roofHeightTexture.rotation = 1.44
+roofNormalTexture.rotation = 1.44
+roofRoughnessTexture.rotation = 1.44
+
 
 /**
  * House
@@ -80,11 +129,59 @@ house.add(walls)
 /**
  * Roof
 */
-const roof = new THREE.Mesh(new THREE.ConeGeometry(3.5, 1, 4), new THREE.MeshStandardMaterial({ color: '#b35f45' }))
+const roof = new THREE.Mesh(new THREE.ConeGeometry(3.5, 1, 4), new THREE.MeshStandardMaterial({
+    map: roofColorTexture,
+    transparent: true,
+    alphaMap: roofAlphaTexture,
+    aoMap: roofAmbientOcclusionTexture,
+    displacementMap: roofHeightTexture,
+    displacementScale: 0.1,
+    normalMap: roofNormalTexture,
+    roughnessMap: roofRoughnessTexture
+}))
+roof.geometry.setAttribute('uv2', new THREE.Float32BufferAttribute(roof.geometry.attributes.uv.array, 2))
 roof.position.y = 3
 roof.rotation.y = Math.PI * 0.25
 house.add(roof)
 
+/**
+ * Chimney
+ */
+const chimney = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.5, 4, 1, true), new THREE.MeshStandardMaterial({
+    map: concrete2ColorTexture,
+    aoMap: concrete2AmbientOcclusionTexture,
+    normalMap: concrete2NormalTexture,
+    roughnessMap: concrete2RoughnessTexture, side: THREE.DoubleSide
+}))
+chimney.geometry.setAttribute('uv2', new THREE.Float32BufferAttribute(chimney.geometry.attributes.uv.array, 2))
+chimney.position.y = 2.9
+chimney.position.x = 1.8
+chimney.position.z = -1
+chimney.rotation.y = Math.PI * 0.25
+const chimneyTopFrame = new THREE.Mesh(new THREE.CylinderGeometry(0.27, 0.27, 0.1, 4, 1, true), new THREE.MeshStandardMaterial({
+    map: bricksColorTexture,
+    aoMap: bricksAmbientOcclusionTexture,
+    normalMap: bricksNormalTexture,
+    roughnessMap: bricksRoughnessTexture, side: THREE.DoubleSide,
+}))
+chimneyTopFrame.geometry.setAttribute('uv2', new THREE.Float32BufferAttribute(chimneyTopFrame.geometry.attributes.uv.array, 2))
+chimneyTopFrame.position.y = 3.2
+chimneyTopFrame.position.x = 1.8
+chimneyTopFrame.position.z = -1
+chimneyTopFrame.rotation.y = Math.PI * 0.25
+const chimneyFilling = new THREE.Mesh(new THREE.RingGeometry(0.270, 0.25, 4), new THREE.MeshStandardMaterial({
+    map: bricksColorTexture,
+    aoMap: bricksAmbientOcclusionTexture,
+    normalMap: bricksNormalTexture,
+    roughnessMap: bricksRoughnessTexture, side: THREE.DoubleSide
+}))
+chimneyFilling.geometry.setAttribute('uv2', new THREE.Float32BufferAttribute(chimneyFilling.geometry.attributes.uv.array, 2))
+chimneyFilling.position.y = 3.15
+chimneyFilling.position.x = 1.8
+chimneyFilling.position.z = -1
+chimneyFilling.rotation.x = Math.PI * 0.5
+chimneyFilling.rotation.z = Math.PI * 0.25
+house.add(chimney, chimneyTopFrame, chimneyFilling)
 /**
  * Door
  */
@@ -260,9 +357,13 @@ bush1.castShadow = true
 bush2.castShadow = true
 bush3.castShadow = true
 bush4.castShadow = true
+chimney.castShadow = true
+chimneyTopFrame.castShadow = true
 
 floor.receiveShadow = true
 walls.receiveShadow = true
+chimney.receiveShadow = true
+chimneyTopFrame.receiveShadow = true
 
 doorLight.shadow.mapSize.set(256, 256)
 doorLight.shadow.far = 7
