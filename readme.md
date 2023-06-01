@@ -15,7 +15,7 @@ npm run dev
 npm run build
 ```
 
-- [ ] Add Chimney
+- [x] Add Chimney
 - [ ] Add Smoke coming out of the chimney
 - [ ] Add window and the body
 - [ ] Move the body on the window based on the camera angle
